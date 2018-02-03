@@ -16,15 +16,15 @@ def check_oberlap(structure, thresh_A=1.0, exclude=0):
             pos_j = position[j]
 
             dpos = pos_i - pos_j
-            for i in range(3):
+            for k in range(3):
                 over_bc = True
                 while over_bc:
-                    if dpos[i] < -system_size_h[i]:
-                        dpos[i] += system_size[i]
-                    elif dpos[i] >= system_size_h[i]:
-                        dpos[i] -= system_size[i]
+                    if dpos[k] < -system_size_h[k]:
+                        dpos[k] += system_size[k]
+                    elif dpos[k] >= system_size_h[k]:
+                        dpos[k] -= system_size[k]
                     else:
-                        over_bc = True
+                        over_bc = False
 
             dl = np.linalg.norm(dpos)
 
