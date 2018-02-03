@@ -6,6 +6,7 @@ import numpy as np
 def check_oberlap(structure, thresh_A=1.0, exclude=0):
     position = structure['pos']
     system_size = structure['sys_size']
+    system_size_h = system_size / 2.0
     n_atom = position.shape[0]
 
     thresh_nm = thresh_A * 0.1
@@ -15,10 +16,20 @@ def check_oberlap(structure, thresh_A=1.0, exclude=0):
             pos_j = position[j]
 
             dpos = pos_i - pos_j
+            for i in range(3):
+                over_bc = True
+                while over_bc:
+                    if dpos[i] < -system_size_h[i]:
+                        dpos[i] += system_size[i]
+                    elif dpos[i] >= system_size_h[i]:
+                        dpos[i] -= system_size[i]
+                    else:
+                        over_bc = True
+
             dl = np.linalg.norm(dpos)
 
             if dl < thresh_nm:
-                print('Overlap: %i %i %f'%(i, j, dl))
+                print('Overlap: %i %i %f (nm)'%(i, j, dl))
 
 
     return
